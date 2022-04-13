@@ -7,6 +7,8 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://java.sun.com/jsf/composite/composite_component"
 	xmlns:custom="http://customUIComponent.com/inputDate">
+<f:event listener="#{templateControllerUIBean.initConversation}"
+	type="preRenderView"></f:event>
 <h:head>
 	<h:outputStylesheet library="bootstrap" name="bootstrap.min.css" />
 	<h:outputStylesheet library="css" name="main.css" />
@@ -20,9 +22,11 @@
 		<h:panelGroup class="back_home_button_section"
 			rendered="#{templateControllerUIBean.templateCode ne 'home'}">
 			<h:form id="back_home_form">
-				<h:commandButton class="back_home_btn btn btn-primary" value="Home">
+				<h:commandButton class="back_home_btn btn btn-primary"
+					action="#{templateControllerUIBean.setTemplateCode('home')}"
+					value="Home">
 					<p:ajax event="click"
-						listener="#{templateControllerUIBean.setTemplateCode('home')}"
+						listener="#{templateControllerUIBean.endConversation}"
 						update="main_super" />
 				</h:commandButton>
 			</h:form>

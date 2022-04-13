@@ -172,7 +172,7 @@
 									value="#{employeeUIBean.employee.joinDate}"
 									inputPattern="ddMMyyyy" outputPattern="dd-MM-yyyy"
 									class="form-control form-control-sm">
-									<f:converter converterId="inputDateConverter" />
+									
 									<f:validator validatorId="emptyJDValidation" />
 									<f:validator validatorId="jdPatternValidation" />
 									<p:ajax event="blur"
