@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://java.sun.com/jsf/composite/composite_component"
+	xmlns:custom="http://customUIComponent.com/inputDate">
+<h:head>
+	<h:outputStylesheet library="bootstrap" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="main.css" />
+	<title>Home</title>
+</h:head>
+
+<h:body>
+	<h:panelGroup id="main_super">
+
+		<!-- start back to home button section -->
+		<h:panelGroup class="back_home_button_section"
+			rendered="#{templateControllerUIBean.templateCode ne 'home'}">
+			<h:form id="back_home_form">
+				<h:commandButton class="back_home_btn btn btn-primary" value="Home">
+					<p:ajax event="click"
+						listener="#{templateControllerUIBean.setTemplateCode('home')}"
+						update="main_super" />
+				</h:commandButton>
+			</h:form>
+		</h:panelGroup>
+		<!-- end back to home button section -->
+
+		<!-- start home template section -->
+		<h:panelGroup
+			rendered="#{templateControllerUIBean.templateCode eq 'home'}">
+			<div class="home_section container">
+				<h1>Welcome home!</h1>
+				<h5>Click a button below.</h5>
+				<h:form id="home_form">
+					<div style="float: none;" class="btn-group btn-group-lg">
+						<h:commandButton id="employee-btn" type="submit"
+							class="employee-btn btn btn-info" value="Employee">
+							<p:ajax event="click"
+								listener="#{templateControllerUIBean.setTemplateCode('em')}"
+								update="main_super" />
+						</h:commandButton>
+						<h:commandButton id="department-btn" type="submit"
+							class="department-btn btn btn-primary" value="Department">
+							<p:ajax event="click"
+								listener="#{templateControllerUIBean.setTemplateCode('de')}"
+								update="main_super" />
+						</h:commandButton>
+					</div>
+				</h:form>
+			</div>
+		</h:panelGroup>
+		<!-- end home template section -->
+
+		<!-- start employee template section -->
+		<h:panelGroup id="employee_template"
+			rendered="#{templateControllerUIBean.templateCode eq 'em'}">
+			<ui:include src="/resources/component_templates/employee.xhtml" />
+		</h:panelGroup>
+		<!-- end employee template section -->
+
+		<!-- start department template section -->
+		<h:panelGroup id="department_template"
+			rendered="#{templateControllerUIBean.templateCode eq 'de'}">
+			<ui:include src="/resources/component_templates/department.xhtml" />
+		</h:panelGroup>
+		<!-- end department template section -->
+
+	</h:panelGroup>
+
+</h:body>
+</html>

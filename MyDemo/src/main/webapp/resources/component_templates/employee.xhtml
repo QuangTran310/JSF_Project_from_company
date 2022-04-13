@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://java.sun.com/jsf/composite/composite_component"
+	xmlns:custom="http://customUIComponent.com/inputDate">
+<h:head>
+	<h:outputStylesheet library="bootstrap" name="bootstrap.min.css" />
+	<h:outputStylesheet library="css" name="main.css" />
+	<title>Employee</title>
+</h:head>
+
+<h:body>
+	<ui:composition>
+		<div class="container">
+			<h:panelGroup id="employee_super">
+				<!-- start of list employees section -->
+				<h:form rendered="#{employeeUIBean.formCode eq 'le'}"
+					id="list_employees_form">
+					<h2 class="list-employees-header text-light bg-dark text-center">List
+						Employees</h2>
+					<h:panelGroup rendered="#{empty employeeUIBean.listEmployees}">
+						<h2 class="empty-list-employees border text-center">
+							<h:outputText value="No employee found." />
+						</h2>
+					</h:panelGroup>
+					<h:dataTable
+						class="table table-bordered table-hover table-dark text-center align-middle"
+						value="#{employeeUIBean.listEmployees}" var="e"
+						rendered="#{not empty employeeUIBean.listEmployees}">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+				#{e.id}
+			</h:column>
+						<h:column>
+							<f:facet name="header">Name</f:facet>
+				#{e.name}
+			</h:column>
+						<h:column>
+							<f:facet name="header">Date of Birth</f:facet>
+							<h:outputText value="#{e.dateOfBirth}">
+								<f:convertDateTime pattern="dd-MM-yyyy" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Email</f:facet>
+				#{e.email}
+			</h:column>
+						<h:column>
+							<f:facet name="header">Phone number</f:facet>
+				#{e.phoneNumber}
+			</h:column>
+						<h:column>
+							<f:facet name="header">Join Date</f:facet>
+							<h:outputText value="#{e.joinDate}">
+								<f:convertDateTime pattern="dd-MM-yyyy" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Action</f:facet>
+							<div class="btn-group-vertical">
+								<h:commandButton class="btn btn-primary" value="More"
+									action="#{employeeUIBean.setCurrentEmployee(e)}">
+									<p:ajax event="click"
+										listener="#{employeeUIBean.setFormCode('ed')}" update="employee_super"></p:ajax>
+								</h:commandButton>
+								<h:commandButton class="btn btn-secondary" value="Delete">
+									<p:ajax event="click"
+										listener="#{employeeUIBean.deleteEmployeeById(e)}"
+										update="employee_super" />
+								</h:commandButton>
+							</div>
+						</h:column>
+					</h:dataTable>
+					<div class="footer bg-dark">
+						<h:commandButton value="Add" class="btn btn-primary btn-add"
+							action="#{employeeUIBean.createNewEmployee()}">
+							<p:ajax event="click"
+								listener="#{employeeUIBean.setFormCode('ae')}" update="employee_super"></p:ajax>
+						</h:commandButton>
+					</div>
+				</h:form>
+				<!-- end of list employees section -->
+
+
+				<!-- start of employee details section -->
+				<div class="employee-details-section">
+					<h:form class="ed-form bg-dark text-light"
+						rendered="#{employeeUIBean.formCode eq 'ed'}"
+						id="update_employee_form">
+						<h2 class="ed-hd text-light bg-dark text-center">Employee
+							Details</h2>
+						<div class="form-group">
+							<h:outputLabel class="header">ID</h:outputLabel>
+							<h:inputText class="form-control form-control-sm"
+								id="update_employee_id_inputtext"
+								value="#{employeeUIBean.employee.id}" readonly="true">
+							</h:inputText>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="update_employee_name_inputtext_section">
+								<h:outputLabel class="header">Name</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									id="update_employee_name_inputtext"
+									value="#{employeeUIBean.employee.name}"
+									a:placeholder="Enter name.">
+									<f:validator validatorId="emptyNameValidation" />
+									<f:validator validatorId="nameLengthValidation" />
+									<p:ajax event="blur"
+										listener="#{employeeUIBean.updateEmployeeInfor}"
+										update="update_employee_name_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="update_employee_name_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="update_employee_dob_inputtext_section">
+
+								<!-- start of composite component section -->
+								<cc:inputDate value="#{employeeUIBean.employee.dateOfBirth}"
+									inputPattern="ddMMyyyy" outputPattern="dd-MM-yyyy" />
+								<!-- end of composite component section -->
+
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="update_employee_email_inputtext_section">
+								<h:outputLabel class="header">Email</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									id="update_employee_email_inputtext"
+									value="#{employeeUIBean.employee.email}"
+									a:placeholder="Enter email.">
+									<f:validator validatorId="emptyEmailValidation" />
+									<f:validator validatorId="emailPatternValidation" />
+									<f:validateBean />
+									<!-- <f:validator validatorId="uniqueEmailValidation" /> -->
+									<p:ajax event="blur"
+										listener="#{employeeUIBean.updateEmployeeInfor}"
+										update="update_employee_email_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="update_employee_email_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="update_employee_pn_inputtext_section">
+								<h:outputLabel class="header">Phone number</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									id="update_employee_pn_inputtext"
+									value="#{employeeUIBean.employee.phoneNumber}"
+									a:placeholder="Enter phone number."
+									onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;">
+									<f:validator validatorId="emptyPhoneNumberValidation" />
+									<f:validator validatorId="numberOfDigitsValidation" />
+									<f:validateBean />
+									<!-- <f:validator validatorId="uniquePhoneNumberValidation" /> -->
+									<p:ajax event="blur"
+										listener="#{employeeUIBean.updateEmployeeInfor}"
+										update="update_employee_pn_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="update_employee_pn_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+
+							<!-- start of custom uicomponent section -->
+							<h:panelGroup id="update_employee_jd_inputtext_section">
+								<h:outputLabel class="header">Join date</h:outputLabel>
+								<custom:inputDate id="update_employee_jd_inputtext"
+									value="#{employeeUIBean.employee.joinDate}"
+									inputPattern="ddMMyyyy" outputPattern="dd-MM-yyyy"
+									class="form-control form-control-sm">
+									<f:converter converterId="inputDateConverter" />
+									<f:validator validatorId="emptyJDValidation" />
+									<f:validator validatorId="jdPatternValidation" />
+									<p:ajax event="blur"
+										listener="#{employeeUIBean.updateEmployeeInfor}"
+										update="update_employee_jd_inputtext_section" />
+								</custom:inputDate>
+								<h:messages class="error" for="update_employee_jd_inputtext" />
+							</h:panelGroup>
+							<!-- end of custom uicomponent section -->
+
+						</div>
+						<div class="form-group">
+							<div class="btn-group">
+								<h:commandButton type="button" class="btn btn-secondary"
+									value="Back">
+									<p:resetInput target="update_employee_email_inputtext_section" />
+									<p:resetInput target="update_employee_pn_inputtext_section" />
+									<p:resetInput target="update_employee_name_inputtext_section" />
+									<p:resetInput target="update_employee_dob_inputtext_section" />
+									<p:resetInput target="update_employee_jd_inputtext_section" />
+									<p:ajax event="click"
+										listener="#{employeeUIBean.setFormCode('le')}" update="employee_super"></p:ajax>
+								</h:commandButton>
+							</div>
+						</div>
+					</h:form>
+				</div>
+				<!-- end of employee details section -->
+
+
+				<!-- start of add employee section -->
+				<div class="ed-section">
+					<h:form class="ae-form bg-dark text-light"
+						rendered="#{employeeUIBean.formCode eq 'ae'}"
+						id="add_employee_form">
+						<h2 class="ed-hd text-light bg-dark text-center">Add Employee</h2>
+						<div class="form-group">
+							<h:panelGroup id="add_employee_name_inputtext_section">
+								<h:outputLabel class="header">Name</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									value="#{employeeUIBean.employee.name}"
+									a:placeholder="Enter name." id="add_employee_name_inputtext">
+									<f:validator validatorId="emptyNameValidation" />
+									<f:validator validatorId="nameLengthValidation" />
+									<p:ajax event="blur"
+										update="add_employee_name_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="add_employee_name_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="add_employee_dob_inputtext_section">
+								<h:outputLabel class="header">Date of Birth</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									value="#{employeeUIBean.employee.dateOfBirth}"
+									a:placeholder="Enter date of birth."
+									converterMessage="Format required: daymonthyear."
+									id="add_employee_dob_inputtext">
+									<f:convertDateTime pattern="ddMMyyyy" />
+									<f:validator validatorId="emptyDOBValidation" />
+									<f:validator validatorId="dobPatternValidation" />
+									<p:ajax event="blur"
+										update="add_employee_dob_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="add_employee_dob_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="add_employee_email_inputtext_section">
+								<h:outputLabel class="header">Email</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									value="#{employeeUIBean.employee.email}"
+									a:placeholder="Enter email." id="add_employee_email_inputtext">
+									<f:validator validatorId="emptyEmailValidation" />
+									<f:validator validatorId="emailPatternValidation" />
+									<f:validateBean />
+									<!-- <f:validator validatorId="uniqueEmailValidation" /> -->
+									<p:ajax event="blur"
+										update="add_employee_email_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="add_employee_email_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="add_employee_pn_inputtext_section">
+								<h:outputLabel class="header">Phone Number</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									value="#{employeeUIBean.employee.phoneNumber}"
+									onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+									a:placeholder="Enter phone number."
+									id="add_employee_pn_inputtext">
+									<f:validator validatorId="emptyPhoneNumberValidation" />
+									<f:validator validatorId="numberOfDigitsValidation" />
+									<f:validateBean />
+									<!-- <f:validator validatorId="uniquePhoneNumberValidation" /> -->
+									<p:ajax event="blur" update="add_employee_pn_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="add_employee_pn_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="form-group">
+							<h:panelGroup id="add_employee_jd_inputtext_section">
+								<h:outputLabel class="header">Join Date</h:outputLabel>
+								<h:inputText class="form-control form-control-sm"
+									value="#{employeeUIBean.employee.joinDate}"
+									a:placeholder="Enter join date."
+									converterMessage="Format required: daymonthyear."
+									id="add_employee_jd_inputtext">
+									<f:convertDateTime pattern="ddMMyyyy" />
+									<f:validator validatorId="emptyJDValidation" />
+									<f:validator validatorId="jdPatternValidation" />
+									<p:ajax event="blur" update="add_employee_jd_inputtext_section" />
+								</h:inputText>
+								<h:messages class="error" for="add_employee_jd_inputtext" />
+							</h:panelGroup>
+						</div>
+						<div class="btn-group">
+							<h:commandButton value="Submit" class="btn btn-primary"
+								action="#{employeeUIBean.addNewEmployee()}">
+							</h:commandButton>
+							<h:commandButton value="Cancel" class="btn btn-secondary">
+								<p:ajax event="click"
+									listener="#{employeeUIBean.setFormCode('le')}" update="employee_super"></p:ajax>
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+				<!-- end of add employee section -->
+
+			</h:panelGroup>
+		</div>
+	</ui:composition>
+</h:body>
+</html>

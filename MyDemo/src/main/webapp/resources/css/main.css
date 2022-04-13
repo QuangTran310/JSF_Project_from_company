@@ -1,0 +1,93 @@
+@charset "ISO-8859-1";
+
+body {
+	background-color: #f6f6f6;
+}
+
+.list-employees-header, .list-departments-header, .ed-form, .dd-form,
+	#add_department_form, #add_employee_form {
+	margin-top: 5%;
+}
+
+.list-employees-header, .list-departments-header, .table, .ed-form,
+	.dd-form, .footer, .ae-form, .ad-form, .empty-list-employees,
+	.empty-list-departments {
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.8);
+}
+
+.form-group {
+	margin-bottom: 1%;
+	overflow: hidden;
+}
+
+.employee-details-section, .department-details-section, .ad-form,
+	.ae-form {
+	width: 50%;
+	margin: auto;
+}
+
+.header {
+	font-weight: bold;
+}
+
+.ed-form, .ae-form, .dd-form, .ad-form {
+	padding: 1.5%;
+}
+
+.btn-group {
+	margin-top: 1.5%;
+	float: right;
+}
+
+.table {
+	margin-bottom: 0.5rem;
+}
+
+.footer {
+	padding: 5px;
+	overflow: hidden;
+}
+
+.ae-form, .ad-form {
+	overflow: hidden;
+}
+
+.btn-add {
+	float: right;
+}
+
+.error {
+	color: red;
+	list-style: none;
+	padding-left: 0px;
+	font-size: 12px;
+	margin-bottom: 0px;
+}
+
+.empty-le {
+	height: 100px;
+	padding-top: 2%;
+}
+
+textarea {
+	resize: none;
+}
+
+.employee-btn, .department-btn {
+	width: 150px;
+}
+
+.home_section {
+	text-align: center;
+	margin-top: 5%;
+}
+
+.back_home_button_section {
+	position: fixed;
+	bottom: 3%;
+	right: 3%;
+}
+
+.back_home_btn {
+	font-size: 25px;
+}
