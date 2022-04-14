@@ -52,7 +52,6 @@ public class DepartmentDAO implements Serializable {
 				d.setOther(rs.getString(6));
 				listDepartments.add(d);
 			}
-			System.out.println("Get list department successfully!");
 			rs.close();
 			stm.close();
 			c.close();
@@ -73,7 +72,6 @@ public class DepartmentDAO implements Serializable {
 			pstm.executeUpdate();
 			pstm.close();
 			c.close();
-			System.out.println("Delete department successfully!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,7 +94,6 @@ public class DepartmentDAO implements Serializable {
 			pstm.executeUpdate();
 			pstm.close();
 			c.close();
-			System.out.println("Update department successfully!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +114,6 @@ public class DepartmentDAO implements Serializable {
 			pstm.executeUpdate();
 			pstm.close();
 			c.close();
-			System.out.println("Insert new department successfully!");
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -19,7 +22,7 @@ import com.demo.model.Employee;
 import com.demo.resources.dao.EmployeeDAO;
 
 @Named(value = "employeeUIBean")
-@SessionScoped
+@ConversationScoped
 public class EmployeeUIBean implements Serializable {
 
 	/**
@@ -37,6 +40,16 @@ public class EmployeeUIBean implements Serializable {
 	private String formCode = "le";
 
 //	private Boolean isNewEmployeeAdded;
+
+	@PostConstruct
+	public void initBean() {
+		System.out.println("Start initiate bean 'employeeUIBean'.");
+	}
+
+	@PreDestroy
+	public void destroyBean() {
+		System.out.println("Destroy bean 'employeeUIBean'.");
+	}
 
 	public String getFormCode() {
 		return formCode;

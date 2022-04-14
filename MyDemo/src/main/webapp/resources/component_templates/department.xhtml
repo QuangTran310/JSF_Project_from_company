@@ -77,7 +77,8 @@
 						<h:commandButton value="Add" class="btn btn-primary btn-add"
 							action="#{departmentUIBean.createNewDepartment()}">
 							<p:ajax event="click"
-								listener="#{departmentUIBean.setFormCode('ad')}" update="super_department"></p:ajax>
+								listener="#{departmentUIBean.setFormCode('ad')}"
+								update="super_department"></p:ajax>
 						</h:commandButton>
 					</div>
 				</h:form>
@@ -283,7 +284,8 @@
 							</h:commandButton>
 							<h:commandButton value="Cancel" class="btn btn-secondary">
 								<p:ajax event="click"
-									listener="#{departmentUIBean.setFormCode('ld')}" update="super_department"></p:ajax>
+									listener="#{departmentUIBean.setFormCode('ld')}"
+									update="super_department"></p:ajax>
 							</h:commandButton>
 						</div>
 					</h:form>

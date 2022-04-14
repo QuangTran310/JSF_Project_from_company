@@ -34,20 +34,6 @@ public class TemplateController implements Serializable {
 		System.out.println("Destroy bean 'templateControllerUIBean'.");
 	}
 
-	public void initConversation() {
-		if (!FacesContext.getCurrentInstance().isPostback() && conversation.isTransient()) {
-			conversation.begin();
-		}
-		System.out.println("Conversation has been beginned.");
-	}
-
-	public void endConversation() {
-		if (!conversation.isTransient()) {
-			conversation.end();
-		}
-		System.out.println("Conversation has been finished.");
-	}
-
 	public Conversation getConversation() {
 		return conversation;
 	}
@@ -62,6 +48,37 @@ public class TemplateController implements Serializable {
 
 	public void setTemplateCode(String templateCode) {
 		this.templateCode = templateCode;
+		if (templateCode.equals("em")) {
+			if (!conversation.isTransient()) {
+				System.out.println("On processing to end conversation ...");
+				conversation.end();
+				System.out.println("End conversation completed.");
+				System.out.println("Conversation current state: transient.");
+			} else {
+				System.out.println("On processing to begin conversation ...");
+				conversation.begin();
+				System.out.println("Begin conversation completed.");
+				System.out.println("Conversation current state: long-running.");
+			}
+		} else if (templateCode.equals("de")) {
+			if (!conversation.isTransient()) {
+				System.out.println("On processing to end conversation ...");
+				conversation.end();
+				System.out.println("End conversation completed.");
+				System.out.println("Conversation current state: transient.");
+			} else {
+				System.out.println("On processing to begin conversation ...");
+				conversation.begin();
+				System.out.println("Begin conversation completed.");
+				System.out.println("Conversation current state: long-running.");
+			}
+		} else if (templateCode.equals("home")) {
+			if (!conversation.isTransient()) {
+				System.out.println("On processing to end conversation ...");
+				conversation.end();
+				System.out.println("End conversation completed.");
+				System.out.println("Conversation current state: transient.");
+			}
+		}
 	}
-
 }

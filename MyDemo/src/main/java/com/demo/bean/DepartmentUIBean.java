@@ -3,7 +3,12 @@ package com.demo.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,14 +18,14 @@ import com.demo.model.Employee;
 import com.demo.resources.dao.DepartmentDAO;
 
 @Named(value = "departmentUIBean")
-@SessionScoped
+@ConversationScoped
 public class DepartmentUIBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8108283581187136872L;
-	
+
 	@Inject
 	DepartmentDAO departmentDAO;
 
@@ -29,6 +34,16 @@ public class DepartmentUIBean implements Serializable {
 	private List<Department> listDepartments;
 
 	private String formCode = "ld";
+
+	@PostConstruct
+	public void initBean() {
+		System.out.println("Start initiate bean 'departmentUIBean'.");
+	}
+
+	@PreDestroy
+	public void destroyBean() {
+		System.out.println("Destroy bean 'departmentUIBean'.");
+	}
 
 	public String getFormCode() {
 		return formCode;
@@ -39,11 +54,10 @@ public class DepartmentUIBean implements Serializable {
 	}
 
 	public List<Department> getListDepartments() {
-		System.out.println("On processing to get list deparments ...");
 		this.listDepartments = departmentDAO.getListDepartments();
 		return listDepartments;
 	}
-	
+
 	public Department getDepartment() {
 		return department;
 	}
@@ -53,21 +67,14 @@ public class DepartmentUIBean implements Serializable {
 	}
 
 	public void deleteDepartmentById(Department deparment) {
-		System.out.println("On processing to delete deparment ...");
 		departmentDAO.deleteDepartment(deparment.getId());
 	}
 
 	public void updateDepartmentInfor(AjaxBehaviorEvent aJaxEvent) {
-		System.out.println("On processing to update deparment ...");
-		if(department.getOther() == null) {
-			System.out.println("'other' field value: null");
-		}
-		System.out.println("'other' field value: " + department.getOther());
 		departmentDAO.updateDepartmentInfor(department);
 	}
 
 	public void addNewDepartment() {
-		System.out.println("On processing to add new deparment ...");
 		departmentDAO.insertNewDepartment(department);
 	}
 
